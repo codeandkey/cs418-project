@@ -1,2 +1,2 @@
 #!/bin/sh
-exec love $(dirname $0) $@
+exec lua light.lua $@
