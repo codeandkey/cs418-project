@@ -2,7 +2,7 @@
 -- Justin Stanley
 
 -- Imports
-local pq = require 'pq'
+local eq = require 'eq'
 
 -- Configuration
 DEFAULT_INPUT = 'input.txt'
@@ -57,26 +57,16 @@ function love.load(arg)
     local input_data = read_file(arg[1])
     voronoi_sites = load_sites(input_data)
 
-    local t = pq.create(function(a, b)
-        if a.y == b.y then
-            assert(a.x ~= b.x)
-            return a.x > b.x
-        else
-            return a.y > b.y
-        end
-    end)
+    local t = eq()
 
     for _, p in ipairs(voronoi_sites) do
-        t:insert({
-            event_type = 'site',
-            point = p,
-        }, p)
+        t:site(p)
     end
 
     local p = t:pop()
 
     while p do
-        print('popped type = ' .. p.event_type .. ', point=(' .. p.point.x .. ', ' .. p.point.y .. ')')
+        print('popped type = ' .. p.evt .. ', point=(' .. p.p.x .. ', ' .. p.p.y .. ')')
         p = t:pop()
     end
 end
